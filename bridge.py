@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""🧠 Memory Bridge — Open Source Memory Scaffold
+"""🧠 MeshMorize — Open Source Memory Scaffold
 
 A three-layer memory system for LLM agents that don't natively persist context.
 Designed to survive crashes, server restarts, and model resets.
@@ -267,7 +267,7 @@ def main():
     if cmd in m:
         m[cmd]()
     else:
-        print("""🧠 Memory Bridge — Commands:
+        print("""🧠 MeshMorize — Commands:
   init                    session start (rotate + create today)
   init-auto               FULL start — init + resume + checkpoint + log
   log <message>           timestamped entry to daily log

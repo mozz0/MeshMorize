@@ -1,4 +1,4 @@
-# 🧠 Memory Bridge
+# 🧠 MeshMorize
 
 **A three-layer memory scaffold for LLM agents.** Survives crashes, server restarts, and model resets.
 
