@@ -31,7 +31,7 @@ def search_fresh(query):
             continue
         with open(fp) as fh:
             content = fh.read()
-            if query.lower() in content.lower():
+            if query.lower() in content.lower() or fuzzy_match(content, query):
                 lines = [l.strip() for l in content.split('\n') if query.lower() in l.lower()]
                 results.append((f, lines[:3]))
     return results
@@ -43,6 +43,31 @@ def read_today():
         with open(fp) as fh:
             return fh.read()[:3000]
     return ""
+
+def fuzzy_match(text, query):
+    """Simple fuzzy matching for typos."""
+    from difflib import SequenceMatcher
+    if not text or not query:
+        return False
+    text = text.lower()
+    query = query.lower()
+    if query in text:
+        return True
+    return SequenceMatcher(None, text, query).ratio() > 0.6
+
+def search_mesh_edges(query, mesh):
+    """Search through mesh graph edges."""
+    results = []
+    edges = mesh.get('edges', [])
+    for i, edge in enumerate(edges):
+        src = edge.get('source', '')
+        tgt = edge.get('target', '')
+        rel = edge.get('relation', '')
+        label = edge.get('label', '')
+        text = f"{src} {tgt} {rel} {label}"
+        if query.lower() in text.lower() or fuzzy_match(text, query):
+            results.append(f"  Edge #{i}: {src} --{rel}--> {tgt} ({label})")
+    return results
 
 def search_mesh(query):
     """Search the mesh.json for matching nodes"""

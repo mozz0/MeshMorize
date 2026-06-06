@@ -6,7 +6,7 @@ import subprocess, os, json, time
 from datetime import datetime
 
 HOME = os.path.expanduser("~")
-WORKSPACE = os.path.join(HOME, ".openclaw", "workspace")
+WORKSPACE = os.environ.get("OPENCLAW_WORKSPACE", os.path.join(HOME, ".openclaw", "workspace"))
 FRESH = os.path.join(WORKSPACE, "memory", "fresh")
 MESH = os.path.join(WORKSPACE, "memory", "mesh.json")
 RAW = os.path.join(WORKSPACE, "memory", "RAW_LOG.txt")
