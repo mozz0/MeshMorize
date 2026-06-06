@@ -1,0 +1,38 @@
+#!/usr/bin/env python3
+"""Auto-logger v2 — force-log every message to daily log.
+
+Runs as first step before every response.
+Captures: message content + what I reply + timestamp
+Every comma. Every word.
+"""
+import sys, os
+from datetime import datetime
+
+LOG_DIR = os.path.expanduser("~/.openclaw/workspace/memory")
+now = datetime.now()
+date_file = f"{LOG_DIR}/{now.strftime('%Y-%m-%d')}.md"
+ts = now.strftime("%H:%M")
+
+if len(sys.argv) < 2:
+    print("usage: auto_log 'what gregory said' ['what i replied']")
+    sys.exit(1)
+
+said = sys.argv[1]
+replied = sys.argv[2] if len(sys.argv) > 2 else ""
+
+entry = f"\n## {ts} — 📝\n> 👤 Gregory: {said}\n"
+if replied:
+    entry += f"> 🤖 Josh: {replied}\n"
+
+with open(date_file, "a") as f:
+    f.write(entry)
+
+# Also append to a permanent raw log
+raw_log = f"{LOG_DIR}/RAW_LOG.txt"
+with open(raw_log, "a") as f:
+    f.write(f"{now.isoformat()} | Greg: {said}")
+    if replied:
+        f.write(f" | Josh: {replied}")
+    f.write("\n")
+
+print("✅")
