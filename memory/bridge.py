@@ -508,7 +508,7 @@ def summarize():
         if any(kw in l.lower() for kw in ['done', 'fix', 'build', 'learn', 'deploy', 'publish', 'test']):
             key_points.append(l.strip().lstrip('- ').lstrip('* '))
     
-    today_path = os.path.join(FRESH_DIR, 'today.md')
+    today_path = os.path.join(MEMORY, 'fresh', 'today.md')
     with open(today_path) as f:
         today = f.read()
     
@@ -594,6 +594,8 @@ def main():
             print(f"\n📋 Context: {cp.get('context','?')}")
             print(f"🕐 From: {cp.get('time_gr','?')}")
     
+    elif command == "summarize":
+        summarize()
     elif command == "wrap":
         session_wrap()
     
@@ -620,6 +622,8 @@ def main():
   checkpoint <context>    save crash-recovery snapshot
   resume                  load latest checkpoint
   touch <node_id>         update mesh node timestamp
+  summarize               auto-generate today.md recap from yesterday's logs
+  summarize               auto-generate today.md recap from yesterday logs
   wrap                    session summary to fresh layer
   mesh [N]                show N most recent nodes (default 10)
   add-node <id> <type>    add a mesh node
