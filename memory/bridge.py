@@ -20,7 +20,7 @@ Usage:
 import json, os, sys, shutil, textwrap
 from datetime import date, datetime, timezone
 
-WORKSPACE = os.path.expanduser("~/.openclaw/workspace")
+WORKSPACE = os.environ.get("OPENCLAW_WORKSPACE", os.path.expanduser("~/.openclaw/workspace"))
 MEMORY = os.path.join(WORKSPACE, "memory")
 FRESH = os.path.join(MEMORY, "fresh")
 DECISIONS = os.path.join(MEMORY, "decisions")
@@ -627,6 +627,7 @@ def main():
   wrap                    session summary to fresh layer
   mesh [N]                show N most recent nodes (default 10)
   add-node <id> <type>    add a mesh node
+  Edge types: triggers | depends_on | related_to | part_of | precedes
 """)
 
 if __name__ == "__main__":
