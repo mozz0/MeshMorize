@@ -99,3 +99,31 @@ All tools respect `$OPENCLAW_WORKSPACE` env var with fallback to `~/.openclaw/wo
 ## Source
 
 https://clawhub.ai/mozz0/josh-learns | https://github.com/mozz0/MeshMorize
+
+## End-to-End Example
+
+```bash
+# Session start
+mem-bridge init           # → Rotates fresh layer, creates today.md
+mem-bridge summarize      # → Auto-generates recap from yesterday's logs
+auto_log "session start"  "ready to work"
+
+# During session
+auto_log "user asked about laser" "i found calibration data from yesterday"
+memory_search "laser calibration"  # → Searches all layers + fuzzy match
+
+# Learning something new
+# → auto_log captures everything automatically
+# → mesh.json stores persistent nodes + edges
+
+# Session end
+mem-bridge checkpoint     # → Snapshots context for next session start
+```
+
+## What's New in v3.2.0
+
+- `$OPENCLAW_WORKSPACE` env var — portable across setups
+- Mesh edges — nodes now link via `triggers`, `depends_on`, `related_to`
+- Fuzzy search — handles typos automatically
+- `mem-bridge summarize` — auto-generates today's recap from yesterday's logs
+- All tools pass `memcheck` 10-point compliance

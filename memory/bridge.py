@@ -489,6 +489,44 @@ def init_auto():
     print("✅ Full startup complete — 0 memory gaps")
     return cp
 
+def summarize():
+    """Generate today.md recap from yesterday's logs using LLM."""
+    from datetime import datetime, timedelta
+    yesterday = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')
+    log_path = os.path.join(WORKSPACE, 'memory', f'{yesterday}.md')
+    
+    if not os.path.exists(log_path):
+        print(f"⚠️  No log file found for {yesterday}")
+        return
+    
+    with open(log_path) as f:
+        content = f.read()[-3000:]  # Last 3KB
+    
+    lines = [l for l in content.split('\n') if l.strip()]
+    key_points = []
+    for l in lines[-20:]:
+        if any(kw in l.lower() for kw in ['done', 'fix', 'build', 'learn', 'deploy', 'publish', 'test']):
+            key_points.append(l.strip().lstrip('- ').lstrip('* '))
+    
+    today_path = os.path.join(FRESH_DIR, 'today.md')
+    with open(today_path) as f:
+        today = f.read()
+    
+    recap = ""
+    if key_points:
+        recap = "\n".join(f"  - {p}" for p in key_points[:5])
+        recap = f"\n\n## Previous session recap\n\n{recap}"
+    
+    # Insert recap after the title section
+    marker = "## Active projects"
+    if marker in today and "Previous session recap" not in today:
+        today = today.replace(marker, f"## Previous session recap\n{recap}\n\n{marker}")
+        with open(today_path, 'w') as f:
+            f.write(today)
+        print(f"✅ Recap generated from {yesterday}.md ({len(key_points)} points)")
+    else:
+        print("ℹ️  Recap already exists or no new points found")
+
 def main():
     command = sys.argv[1] if len(sys.argv) > 1 else "help"
     
