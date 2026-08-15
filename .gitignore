@@ -1,0 +1,8 @@
+# Credentials & secrets — NEVER commit these
+*.env
+.env
+secrets/
+~/.config/mesh/
+nas.env
+*.key
+*.pem

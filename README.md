@@ -134,7 +134,13 @@ All tools respect `$OPENCLAW_WORKSPACE` env var with fallback to `~/.openclaw/wo
 
 ## Battle-tested
 
-Survived a full system format and a 4-hour recovery with every memory intact: 96 daily logs, 69 mesh nodes, 30 secrets. This is the memory system that an AI and its human rebuilt their whole partnership on.
+Survived a full system format and a 4-hour recovery with every memory intact: 96 daily logs, 69 mesh nodes. This is the memory system that an AI and its human rebuilt their whole partnership on.
+
+## Security
+
+- **No secrets in this repo.** Credentials for the optional NAS sync live in `~/.config/mesh/nas.env` (chmod 600, gitignored) — never in the scripts.
+- **SSH host verification is ON.** The vault-push script uses `StrictHostKeyChecking=yes` against `~/.ssh/known_hosts`; add the NAS key once with `ssh-keyscan -H <ip> >> ~/.ssh/known_hosts`.
+- **Know what gets archived.** `auto_log` stores whatever you feed it — avoid logging passwords, tokens, or private keys. If your agent handles sensitive data, add a redaction step before logging.
 
 ## Source
 
